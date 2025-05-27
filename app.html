@@ -42,7 +42,7 @@ border-radius: 2px;
         .dark .time-label-cell { color: #a0aec0; border-right-color: #4a5568; border-bottom-color: #4a5568; }
         .dark .day-column { border-right-color: #4a5568; }
         .dark .hour-slot { border-bottom-color: #4a5568; }
-        .dark .task-block { background-color: #4299e1; color: white; }
+        .dark .task-block { background-color: #4299e1; color: white; } /* Default task block color in dark mode */
         .dark .controls input[type="date"],
         .dark .modal-content input[type="date"], /* Added for modal date input */
         .dark .modal-content input[type="text"],
@@ -53,6 +53,134 @@ border-radius: 2px;
         .dark #messageBox.bg-green-500 { background-color: #2f855a !important; color: white; }
         .dark .current-week-display, .dark .modal-title, .dark .modal-close-btn { color: #e2e8f0; }
         .dark #calendarDayHeaders .bg-blue-100 { background-color: #2b6cb0 !important; color: #fff !important; }
+
+        /* Dark theme enhancements for sidebar */
+        .dark #menu-sidebar { background: #1f2937; /* Dark gray/blue */ color: #f3f4f6; /* Light gray text */ }
+        .dark #menu-sidebar div:first-child { border-bottom-color: rgba(255,255,255,0.1); } /* Pin button header border */
+        .dark #menu-sidebar h2 { color: #9ca3af; /* Lighter gray for heading */ }
+        .dark #sidebarPinBtn { color: #e5e7eb; border-color: #e5e7eb; } /* Pin button style */
+        .dark #menu-sidebar ul li a { color: #d1d5db; box-shadow: inset 0 -1px rgba(255, 255, 255, 0.1); }
+        .dark #menu-sidebar ul li:first-child a { box-shadow: none; } /* Remove top border from first task if header is present */
+        .dark #menu-sidebar ul li a:hover { background: rgba(255, 255, 255, 0.05); color: #ffffff; }
+
+
+        /* Pink Theme */
+        .pink-theme body {
+            background-image: none; /* Remove woods.gif */
+            background-color: #fff5f7; /* Very light pink */
+            color: #831843; /* Dark pink/maroon for text */
+        }
+        .pink-theme .app-container {
+            background-color: rgba(255, 224, 230, 0.85); /* Semi-transparent light pink */
+            border-color: #fbcfe8; /* Soft pink border */
+        }
+        .pink-theme .app-container div { /* Overriding the default transparent background for divs inside app-container */
+            background: rgba(255, 224, 230, 0.0); /* Keep backdrop-filter effect if desired, or set to a light pink */
+            backdrop-filter: blur( 6.5px );
+            -webkit-backdrop-filter: blur( 6.5px );
+        }
+        .pink-theme #calendarDayHeaders {
+            background-color: #fce7f3;
+            border-bottom-color: #fbcfe8;
+            color: #9d174d; /* Text color for day headers */
+        }
+        .pink-theme #calendarDayHeaders > div {
+            color: #9d174d;
+            border-right-color: #fbcfe8;
+        }
+        .pink-theme #calendarDayHeaders .bg-blue-100 { /* Current day highlight */
+            background-color: #f472b6 !important; /* Vibrant pink */
+            color: #ffffff !important;
+        }
+        .pink-theme #calendarGrid {
+            background-color: rgba(253, 232, 238, 0.7); /* Slightly more opaque light pink for grid background */
+            border-color: #fbcfe8;
+        }
+        .pink-theme .time-label-cell {
+            color: #be185d;
+        }
+        .pink-theme .day-column {
+            border-right-color: #fbcfe8;
+        }
+         .pink-theme .app-container #calendarGrid .day-column { /* Original border-image override for pink theme */
+            border-image: linear-gradient(45deg, #f9a8d4, #f472b6) 1;
+        }
+        .pink-theme .hour-slot {
+        }
+        .pink-theme .task-block {
+            background-color: #ec4899 !important; /* Vibrant pink */
+            color: white;
+        }
+        .pink-theme .controls button.bg-green-500, .pink-theme button#openAddTaskModalBtn {
+            background-color: #db2777;
+            border-color: #db2777;
+        }
+        .pink-theme .controls button.bg-green-500:hover, .pink-theme button#openAddTaskModalBtn:hover {
+            background-color: #c5206b;
+        }
+        .pink-theme .controls button.bg-gray-500, .pink-theme button#openSettingsModalBtn { /* Assuming settings button */
+            background-color: #f472b6; /* Lighter pink for secondary buttons */
+            border-color: #f472b6;
+            color: white;
+        }
+        .pink-theme .controls button.bg-gray-500:hover, .pink-theme button#openSettingsModalBtn:hover {
+            background-color: #ec4899;
+        }
+         .pink-theme .controls button#openSidebarBtn { /* Explicitly style the menu button */
+            background-color: #db2777;
+            border-color: #db2777;
+            color: white;
+        }
+        .pink-theme .controls button#openSidebarBtn:hover {
+            background-color: #c5206b;
+        }
+        .pink-theme input[type="date"],
+        .pink-theme input[type="text"],
+        .pink-theme input[type="time"],
+        .pink-theme .modal-content input[type="date"],
+        .pink-theme .modal-content input[type="text"],
+        .pink-theme .modal-content input[type="time"] {
+            background-color: #fff0f3;
+            border-color: #fbcfe8;
+            color: #831843;
+        }
+        .pink-theme .modal-content {
+            background-color: #fff0f3;
+            color: #831843;
+        }
+        .pink-theme .modal-content label { color: #be185d; }
+        .pink-theme .modal-title { color: #9d174d; }
+        .pink-theme .modal-close-btn { color: #9d174d; }
+        .pink-theme .modal-close-btn:hover { color: #be185d; }
+
+        .pink-theme #messageBox.bg-red-500 { background-color: #ef4444 !important; color: white; } /* Keep error distinct */
+        .pink-theme #messageBox.bg-green-500 { background-color: #db2777 !important; color: white; } /* Success message with theme color */
+        
+        .pink-theme .current-week-display { color: #be185d; }
+
+        .pink-theme #menu-sidebar {
+            background: #fce7f3; /* Light pink */
+            color: #9d174d; /* Darker pink text */
+        }
+        .pink-theme #menu-sidebar div:first-child { border-bottom-color: rgba(131, 24, 67, 0.2); } /* Pin button header border */
+        .pink-theme #menu-sidebar h2 {
+            color: #be185d;
+        }
+        .pink-theme #sidebarPinBtn { color: #831843; border-color: #831843; } /* Pin button style */
+        .pink-theme #menu-sidebar ul li a {
+            color: #9d174d;
+            box-shadow: inset 0 -1px rgba(0,0,0,0.05);
+        }
+        .pink-theme #menu-sidebar ul li:first-child a { box-shadow: none; } /* Remove top border from first task */
+        .pink-theme #menu-sidebar ul li a:hover {
+            background: rgba(219, 39, 119, 0.1);
+            color: #be185d;
+        }
+        /* Pink theme for toggle switches */
+        .pink-theme .slider { background-color: #fbcfe8; } /* Off state */
+        .pink-theme input:checked + .slider { background-color: #ec4899; } /* On state */
+        .pink-theme input:focus + .slider { box-shadow: 0 0 1px #ec4899; }
+
 
         .calendar-container { 
    background: rgba( 255, 255, 255, 0.05 );
@@ -82,15 +210,13 @@ border-radius: 2px;
             padding-top: 2px; 
             font-size: 1rem; 
             color: #ffffff; 
-           /* border-right: 1px solid #e5e7eb;  */
-            /* border-bottom: 1px solid #e5e7eb; */
             height: 60px; 
             box-sizing: border-box; 
         }
         .time-label-cell:last-of-type { border-bottom: none; }
         .day-column { position: relative; border-right: 1px solid #e5e7eb; }
         .day-column:last-child { border-right: none; }
-        .hour-slot { height: 60px; min-height: 60px; /* border-bottom: 1px solid #e5e7eb; */ position: relative; box-sizing: border-box; }
+        .hour-slot { height: 60px; min-height: 60px; position: relative; box-sizing: border-box; }
         .day-column .hour-slot:last-child { border-bottom: none; }
         .task-block { 
             overflow: hidden; 
@@ -102,7 +228,6 @@ border-radius: 2px;
             z-index: 10; 
             margin-left: 2px; 
             margin-right: 2px;
-            background-color: #8B5CF6 !important; /* Purple color */
             color: white;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -118,33 +243,63 @@ border-radius: 2px;
         .dark input:checked + .slider { background-color: #60a5fa; }
         input:focus + .slider { box-shadow: 0 0 1px #2196F3; }
         input:checked + .slider:before { transform: translateX(22px); }
+
+        /* Adjustments for when sidebar is pinned */
+        .st-container.sidebar-pinned .st-pusher {
+            margin-left: 300px; /* Width of the sidebar */
+            transition: margin-left 0.5s; /* Smooth transition */
+        }
+
+        .st-container.sidebar-pinned .st-menu {
+            visibility: visible;
+            transform: translate3d(0, 0, 0); /* Ensure it's fully visible for st-effect-1 */
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/component.css" />
+    <link rel="stylesheet" type="text/css" href="css/icons.css" />
 </head>
 <body class="text-gray-800 flex flex-col items-center pt-4 pb-8 px-2 md:px-4 min-h-screen">
 
-    <div class="app-container shadow-xl rounded-sm p-4 sm:p-6 md:p-8 w-full">
-        <header class="mb-6 text-center">
-            <h1 class="text-3xl sm:text-4xl font-bold text-blue-600 dark:text-blue-400">Weekly Task Calendar</h1>
-            <div class="controls mt-4 flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-2">
-               
-                <button id="openAddTaskModalBtn" title="Add New Task" class="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-150 w-10 h-10 flex items-center justify-center sm:w-auto sm:px-4 sm:py-2 sm:rounded-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 sm:hidden"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /> </svg>
-                    <span class="hidden sm:inline">Add Task</span>
-                </button>
-                <button id="openSettingsModalBtn" title="Settings" class="p-2 bg-gray-500 text-white rounded-full hover:bg-gray-600 transition duration-150 w-10 h-10 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.646.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 1.255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.333.183-.582.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.759 6.759 0 010-1.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                </button>
+    <div id="st-container" class="st-container">
+        <nav class="st-menu st-effect-1" id="menu-sidebar">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8em 1em; border-bottom: 1px solid rgba(0,0,0,0.1);">
+                <h2 class="icon icon-lab" style="margin: 0; font-size: 1.5em;">Tasks</h2>
+                <button id="sidebarPinBtn" title="Pin Sidebar" class="text-sm" style="padding: 5px 10px; background-color: transparent; border: 1px solid currentColor; border-radius: 4px; cursor: pointer; font-size: 0.9em;">Pin</button>
             </div>
-            <div id="currentWeekDisplay" class="mt-2 text-lg font-semibold text-gray-700 current-week-display"></div>
-        </header>
+            <ul><li><a href="#">Home</a></li></ul></nav>
+        <div class="st-pusher">
+            <div class="app-container shadow-xl rounded-sm p-4 sm:p-6 md:p-8 w-full">
+                <header class="mb-6 text-center">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-blue-600 dark:text-blue-400">Weekly Task Calendar</h1>
+                    <div class="controls mt-4 flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-2">
+                       
+                        <div id="st-trigger-effects">
+                            <button id="openSidebarBtn" data-effect="st-effect-1" class="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-150 w-10 h-10 flex items-center justify-center sm:w-auto sm:px-4 sm:py-2 sm:rounded-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 sm:hidden"> <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /> </svg>
+                                <span class="hidden sm:inline">Menu</span>
+                            </button>
+                        </div>
 
-        <div class="calendar-wrapper border border-gray-300 rounded-sm shadow-md overflow-auto">
-            <div id="calendarDayHeaders"></div>
-            <div id="calendarGrid"></div>
+                        <button id="openAddTaskModalBtn" title="Add New Task" class="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-150 w-10 h-10 flex items-center justify-center sm:w-auto sm:px-4 sm:py-2 sm:rounded-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 sm:hidden"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /> </svg>
+                            <span class="hidden sm:inline">Add Task</span>
+                        </button>
+                        <button id="openSettingsModalBtn" title="Settings" class="p-2 bg-gray-500 text-white rounded-full hover:bg-gray-600 transition duration-150 w-10 h-10 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.646.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 1.255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.333.183-.582.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.759 6.759 0 010-1.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="currentWeekDisplay" class="mt-2 text-lg font-semibold text-gray-700 current-week-display"></div>
+                </header>
+
+                <div class="calendar-wrapper border border-gray-300 rounded-sm shadow-md overflow-auto">
+                    <div id="calendarDayHeaders"></div>
+                    <div id="calendarGrid"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -195,11 +350,12 @@ border-radius: 2px;
             </div>
             <div class="space-y-6">
                 <div class="flex items-center justify-between">
-                    <label for="darkModeToggle" class="text-sm font-medium text-gray-700">Dark Mode</label>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="darkModeToggle">
-                        <span class="slider round"></span>
-                    </label>
+                    <label for="themeSelector" class="text-sm font-medium text-gray-700 dark:text-gray-300">Theme</label>
+                    <select id="themeSelector" class="mt-1 block w-1/2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-700 dark:text-gray-200">
+                        <option value="default">Default</option>
+                        <option value="dark">Dark</option>
+                        <option value="pink">Pink</option>
+                    </select>
                 </div>
                 <div class="flex items-center justify-between">
                     <label for="timeFormatToggle" class="text-sm font-medium text-gray-700">Use 24-Hour Format</label>
@@ -212,14 +368,14 @@ border-radius: 2px;
         </div>
     </div>
 
+    <script src="js/classie.js"></script>
+    <script src="js/sidebarEffects.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Core Calendar Elements
             const calendarGrid = document.getElementById('calendarGrid');
             const calendarDayHeaders = document.getElementById('calendarDayHeaders');
-            const currentDateInput = document.getElementById('currentDateInput'); // For selecting week to display
-            // const prevWeekBtn = document.getElementById('prevWeekBtn'); // REMOVED
-            // const nextWeekBtn = document.getElementById('nextWeekBtn'); // REMOVED
+            const currentDateInput = document.getElementById('currentDateInput'); 
             const currentWeekDisplay = document.getElementById('currentWeekDisplay');
 
             // Message Box Elements
@@ -232,30 +388,57 @@ border-radius: 2px;
             const addTaskModal = document.getElementById('addTaskModal');
             const closeAddTaskModalBtn = document.getElementById('closeAddTaskModalBtn');
             const taskFormInModal = document.getElementById('taskForm');
-            const taskDateModalInput = document.getElementById('taskDateModalInput'); // New date input in modal
+            const taskDateModalInput = document.getElementById('taskDateModalInput');
 
             // Settings Modal Elements
             const openSettingsModalBtn = document.getElementById('openSettingsModalBtn');
             const settingsModal = document.getElementById('settingsModal');
             const closeSettingsModalBtn = document.getElementById('closeSettingsModalBtn');
-            const darkModeToggle = document.getElementById('darkModeToggle');
+            const themeSelector = document.getElementById('themeSelector'); 
             const timeFormatToggle = document.getElementById('timeFormatToggle');
+            
+            // Sidebar Elements
+            const sidebarTaskList = document.querySelector('#menu-sidebar ul'); 
+            const sidebarPinBtn = document.getElementById('sidebarPinBtn');
+            const stContainer = document.getElementById('st-container');
 
             // Application State
             let selectedDate = new Date(); 
             let tasks = loadTasks();
             let use24HourFormat = true; 
+            let isSidebarPinned = false;
             const HOUR_SLOT_HEIGHT = 60; 
             const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const TASK_COLORS = ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6', '#D946EF'];
+
 
             function applyPreferences() {
-                const prefersDark = localStorage.getItem('calendarDarkMode') === 'true';
-                document.documentElement.classList.toggle('dark', prefersDark);
-                if (darkModeToggle) darkModeToggle.checked = prefersDark;
+                // Theme Preference
+                const storedTheme = localStorage.getItem('calendarTheme') || 'default';
+                document.documentElement.classList.remove('dark', 'pink-theme'); 
+                if (storedTheme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else if (storedTheme === 'pink') {
+                    document.documentElement.classList.add('pink-theme');
+                }
+                if (themeSelector) themeSelector.value = storedTheme;
 
+                // Time Format Preference
                 const prefers24Hour = localStorage.getItem('calendarTimeFormat24Hour') === 'true';
                 use24HourFormat = prefers24Hour;
                 if (timeFormatToggle) timeFormatToggle.checked = prefers24Hour;
+
+                // Sidebar Pin Preference
+                isSidebarPinned = localStorage.getItem('calendarSidebarPinned') === 'true';
+                if (sidebarPinBtn) {
+                    sidebarPinBtn.textContent = isSidebarPinned ? 'Unpin' : 'Pin';
+                }
+                if (isSidebarPinned && stContainer) {
+                    stContainer.classList.add('st-menu-open');
+                    stContainer.classList.add('sidebar-pinned'); 
+                } else if (stContainer) {
+                    stContainer.classList.remove('sidebar-pinned');
+                }
             }
 
             function openGenericModal(modalElement) {
@@ -266,13 +449,11 @@ border-radius: 2px;
                 if(formToReset) formToReset.reset(); 
             }
 
-            // Add Task Modal Listeners & Logic
             if (openAddTaskModalBtn) {
                 openAddTaskModalBtn.addEventListener('click', () => {
-                    // Initialize the modal's date input with the currently selected display date
                     if (taskDateModalInput && currentDateInput) {
                         taskDateModalInput.value = currentDateInput.value;
-                    } else if (taskDateModalInput) { // Fallback if currentDateInput is not there for some reason
+                    } else if (taskDateModalInput) { 
                         taskDateModalInput.value = formatDateForStorage(selectedDate);
                     }
                     openGenericModal(addTaskModal);
@@ -283,7 +464,6 @@ border-radius: 2px;
                 if (event.target === addTaskModal) closeGenericModal(addTaskModal, taskFormInModal);
             });
 
-            // Settings Modal Listeners
             if (openSettingsModalBtn) openSettingsModalBtn.addEventListener('click', () => openGenericModal(settingsModal));
             if (closeSettingsModalBtn) closeSettingsModalBtn.addEventListener('click', () => closeGenericModal(settingsModal));
             if (settingsModal) settingsModal.addEventListener('click', (event) => {
@@ -297,15 +477,40 @@ border-radius: 2px;
                 }
             });
 
-            if (darkModeToggle) darkModeToggle.addEventListener('change', () => {
-                document.documentElement.classList.toggle('dark', darkModeToggle.checked);
-                localStorage.setItem('calendarDarkMode', darkModeToggle.checked.toString());
-            });
+            if (themeSelector) {
+                themeSelector.addEventListener('change', () => {
+                    const selectedTheme = themeSelector.value;
+                    document.documentElement.classList.remove('dark', 'pink-theme');
+                    if (selectedTheme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                    } else if (selectedTheme === 'pink') {
+                        document.documentElement.classList.add('pink-theme');
+                    }
+                    localStorage.setItem('calendarTheme', selectedTheme);
+                });
+            }
+
             if (timeFormatToggle) timeFormatToggle.addEventListener('change', () => {
                 use24HourFormat = timeFormatToggle.checked;
                 localStorage.setItem('calendarTimeFormat24Hour', use24HourFormat.toString());
                 renderFullCalendar();
             });
+
+            if (sidebarPinBtn && stContainer) {
+                sidebarPinBtn.addEventListener('click', () => {
+                    isSidebarPinned = !isSidebarPinned;
+                    localStorage.setItem('calendarSidebarPinned', isSidebarPinned);
+                    sidebarPinBtn.textContent = isSidebarPinned ? 'Unpin' : 'Pin';
+                    if (isSidebarPinned) {
+                        stContainer.classList.add('st-menu-open');
+                        stContainer.classList.add('sidebar-pinned');
+                    } else {
+                        stContainer.classList.remove('sidebar-pinned');
+                        // Note: We don't force close here; sidebarEffects.js handles closing via its own logic
+                        // or the user can close it manually.
+                    }
+                });
+            }
             
             function getWeekStartDate(date, startDay = 1) { 
                 const d = new Date(date);
@@ -401,13 +606,67 @@ border-radius: 2px;
             
             if(closeMessageBtn) closeMessageBtn.addEventListener('click', () => { if(messageBox) messageBox.classList.add('hidden'); });
             
+            function renderSidebarTasks() {
+                if (!sidebarTaskList) return;
+                sidebarTaskList.innerHTML = ''; 
+                
+                let hasTasks = false;
+                for (const dateKey in tasks) {
+                    if (tasks.hasOwnProperty(dateKey) && tasks[dateKey].length > 0) {
+                        hasTasks = true;
+                        break;
+                    }
+                }
+
+                if (!hasTasks) {
+                    const noTasksItem = document.createElement('li');
+                    noTasksItem.innerHTML = '<a>No tasks yet.</a>'; 
+                    sidebarTaskList.appendChild(noTasksItem);
+                    return;
+                }
+
+                Object.keys(tasks).sort().forEach(dateKey => { 
+                    if (tasks.hasOwnProperty(dateKey)) {
+                        tasks[dateKey].forEach(task => {
+                            const listItem = document.createElement('li');
+                            listItem.dataset.taskId = task.id;
+                            const linkItem = document.createElement('a'); 
+                            linkItem.href = '#'; 
+                            
+                            const colorIcon = document.createElement('span');
+                            colorIcon.style.display = 'inline-block';
+                            colorIcon.style.width = '12px';
+                            colorIcon.style.height = '12px';
+                            colorIcon.style.backgroundColor = task.color || '#8B5CF6'; 
+                            colorIcon.style.borderRadius = '50%'; 
+                            colorIcon.style.marginRight = '8px';
+                            colorIcon.style.verticalAlign = 'middle'; 
+                            linkItem.prepend(colorIcon); 
+
+                            const descriptionNode = document.createTextNode(task.description);
+                            linkItem.appendChild(descriptionNode);
+                            
+                            const dateSpan = document.createElement('span');
+                            const taskDate = new Date(task.date + 'T00:00:00'); 
+                            const options = { weekday: 'short', day: 'numeric', month: 'short' };
+                            dateSpan.textContent = ` (${taskDate.toLocaleDateString(undefined, options)})`;
+                            dateSpan.style.fontSize = '0.8em';
+                            dateSpan.style.opacity = '0.7';
+                            linkItem.appendChild(dateSpan);
+
+                            listItem.appendChild(linkItem);
+                            sidebarTaskList.appendChild(listItem);
+                        });
+                    }
+                });
+            }
+
             if (taskFormInModal) {
                 taskFormInModal.addEventListener('submit', (event) => {
                     event.preventDefault();
                     const descriptionElement = document.getElementById('taskDescriptionModal');
                     const startTimeElement = document.getElementById('startTimeModal');
                     const endTimeElement = document.getElementById('endTimeModal');
-                    // Task date now comes from the modal's date input
                     const taskDateInputElement = document.getElementById('taskDateModalInput'); 
 
                     if (!descriptionElement || !startTimeElement || !endTimeElement || !taskDateInputElement) {
@@ -417,13 +676,13 @@ border-radius: 2px;
                     const description = descriptionElement.value.trim();
                     const startTimeStr = startTimeElement.value;
                     const endTimeStr = endTimeElement.value;
-                    const taskDateStr = taskDateInputElement.value; // Get date string from modal input
+                    const taskDateStr = taskDateInputElement.value; 
 
                     if (!description || !startTimeStr || !endTimeStr || !taskDateStr) {
                         showMessage("Please fill in all task details, including the task date.", true); return;
                     }
                     
-                    const taskDate = new Date(taskDateStr + 'T00:00:00'); // Ensure it's parsed as local start of day
+                    const taskDate = new Date(taskDateStr + 'T00:00:00'); 
                      if (isNaN(taskDate.getTime())) { 
                         showMessage("Please select a valid date for the task.", true); return;
                     }
@@ -437,16 +696,25 @@ border-radius: 2px;
                         showMessage("End time must be after start time.", true); return;
                     }
 
+                    let totalTasks = 0;
+                    for (const dateKey in tasks) {
+                        if (tasks.hasOwnProperty(dateKey)) {
+                            totalTasks += tasks[dateKey].length;
+                        }
+                    }
+                    const newColor = TASK_COLORS[totalTasks % TASK_COLORS.length];
+
                     const taskDateKey = formatDateForStorage(taskDate);
                     if (!tasks[taskDateKey]) tasks[taskDateKey] = [];
                     tasks[taskDateKey].push({
                         id: Date.now().toString(), description,
                         startHour, startMinute, endHour, endMinute,
-                        date: taskDateKey
+                        date: taskDateKey,
+                        color: newColor 
                     });
                     saveTasks();
-                    // Re-render the week that is currently being displayed by the main date picker
                     renderTasksForWeek(getWeekStartDate(selectedDate,1)); 
+                    renderSidebarTasks(); 
                     closeGenericModal(addTaskModal, taskFormInModal); 
                     showMessage("Task added successfully!", false, 2000); 
                 });
@@ -467,8 +735,8 @@ border-radius: 2px;
                             taskBlock.textContent = task.description;
                             taskBlock.dataset.taskId = task.id;
                             taskBlock.draggable = true;
+                            taskBlock.style.backgroundColor = task.color || '#8B5CF6'; 
                             
-                            // Add drag event listeners
                             taskBlock.addEventListener('dragstart', handleDragStart);
                             taskBlock.addEventListener('dragend', handleDragEnd);
                             
@@ -491,14 +759,12 @@ border-radius: 2px;
                     }
                 }
                 
-                // Add drop event listeners to hour slots
                 document.querySelectorAll('.hour-slot').forEach(slot => {
                     slot.addEventListener('dragover', handleDragOver);
                     slot.addEventListener('drop', handleDrop);
                 });
             }
 
-            // Drag and Drop Handlers
             let draggedTask = null;
 
             function handleDragStart(e) {
@@ -506,7 +772,6 @@ border-radius: 2px;
                 e.dataTransfer.effectAllowed = 'move';
                 e.dataTransfer.setData('text/plain', this.dataset.taskId);
                 
-                // Create an empty image for the drag operation
                 const emptyImage = new Image();
                 e.dataTransfer.setDragImage(emptyImage, 0, 0);
             }
@@ -534,21 +799,19 @@ border-radius: 2px;
                 const newDateKey = this.closest('.day-column').dataset.date;
                 const hourSlot = parseInt(this.dataset.hour);
                 
-                // Find the task in the old date
                 const taskIndex = tasks[oldDateKey].findIndex(t => t.id === taskId);
                 if (taskIndex === -1) return;
                 
                 const task = tasks[oldDateKey][taskIndex];
                 const durationMinutes = (task.endHour * 60 + task.endMinute) - (task.startHour * 60 + task.startMinute);
                 
-                // Update task time
                 task.startHour = hourSlot;
                 task.startMinute = 0;
                 task.endHour = Math.floor((hourSlot * 60 + durationMinutes) / 60);
                 task.endMinute = (hourSlot * 60 + durationMinutes) % 60;
                 
-                // Move task to new date if different
                 if (oldDateKey !== newDateKey) {
+                    task.date = newDateKey; 
                     if (!tasks[newDateKey]) tasks[newDateKey] = [];
                     tasks[newDateKey].push(task);
                     tasks[oldDateKey].splice(taskIndex, 1);
@@ -557,9 +820,9 @@ border-radius: 2px;
                 
                 saveTasks();
                 renderTasksForWeek(getWeekStartDate(selectedDate, 1));
+                renderSidebarTasks(); 
             }
 
-            // Add styles for drag and drop
             const styleSheet = document.createElement('style');
             styleSheet.textContent = `
                 .hour-slot.drag-over {
@@ -593,15 +856,15 @@ border-radius: 2px;
                     if (tasks[taskDateKey].length === 0) delete tasks[taskDateKey];
                     saveTasks();
                     renderTasksForWeek(getWeekStartDate(selectedDate,1)); 
+                    renderSidebarTasks(); 
                     showMessage("Task deleted.", false, 2000); 
                 }
             }
 
-            // Event listener for the main date input (controls displayed week)
             if (currentDateInput) currentDateInput.addEventListener('change', (e) => {
                 const newSelectedDate = new Date(e.target.value + 'T00:00:00');
                 if (!isNaN(newSelectedDate.getTime())) {
-                    selectedDate = newSelectedDate; // This date determines the week to show
+                    selectedDate = newSelectedDate; 
                     renderFullCalendar();
                 }
             });
@@ -610,12 +873,13 @@ border-radius: 2px;
                 applyPreferences(); 
                 const today = new Date();
                 if(currentDateInput) {
-                    currentDateInput.value = formatDateForStorage(today); // Set to YYYY-MM-DD format
+                    currentDateInput.value = formatDateForStorage(today); 
                     selectedDate = new Date(currentDateInput.value + 'T00:00:00'); 
                 } else {
                     selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
                 }
                 renderFullCalendar();
+                renderSidebarTasks(); 
             }
             initializeApp();
         });
