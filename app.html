@@ -33,6 +33,15 @@ border-radius: 2px;
             transition: background-color 0.3s, color 0.3s;
         }
 
+        #st-container, .st-pusher { /* Ensure these are full width */
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .st-pusher > .app-container { /* Ensure app-container can center itself */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         /* Styles for dark mode */
         .dark body { background-color: #1a202c; color: #e2e8f0; }
         .dark .app-container { background-color: #2d3748; border-color: #4a5568; }
@@ -254,12 +263,31 @@ border-radius: 2px;
             visibility: visible;
             transform: translate3d(0, 0, 0); /* Ensure it's fully visible for st-effect-1 */
         }
+
+        /* Modal and Message Box Z-index Fixes */
+        #addTaskModal, #settingsModal {
+            /* Tailwind classes like z-30/z-40 are overridden by this higher z-index */
+            z-index: 5000 !important; 
+        }
+
+        #messageBox {
+            /* Tailwind class z-20 is overridden by this higher z-index */
+            z-index: 5001 !important; 
+        }
+
+        /* Disable st-pusher::after overlay when sidebar is pinned and menu is open */
+        .st-container.sidebar-pinned.st-menu-open .st-pusher::after {
+            width: 0;
+            height: 0;
+            opacity: 0;
+            transition: none !important; /* Make it disappear immediately */
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/component.css" />
     <link rel="stylesheet" type="text/css" href="css/icons.css" />
 </head>
-<body class="text-gray-800 flex flex-col items-center pt-4 pb-8 px-2 md:px-4 min-h-screen">
+<body class="text-gray-800 flex flex-col pt-4 pb-8 px-2 md:px-4 min-h-screen"> <!-- Removed items-center -->
 
     <div id="st-container" class="st-container">
         <nav class="st-menu st-effect-1" id="menu-sidebar">
