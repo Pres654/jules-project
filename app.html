@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Task Calendar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+
+
+.app-container div{
+background: rgba( 255, 255, 255, 0 );
+/* box-shadow: 0 0.2px 100px 0 rgba(0, 0, 0, 0.144); */
+backdrop-filter: blur( 6.5px );
+-webkit-backdrop-filter: blur( 6.5px );
+border-radius: 2px;
+/* border: .5px solid rgba( 255, 255, 255, 2 ); */
+
+        }
+.app-container #calendarGrid  .day-column{
+                border-width: 4px;
+            border-style: solid;
+            border-image: linear-gradient(45deg, cyan, #00ff95) 1;
+}
+        body {
+             background-image: url('./woods.gif');
+             background-size: 100%;
+             background-position: 300px 0;
+        }
+        html, body { 
+            height: 100%; 
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Styles for dark mode */
+        .dark body { background-color: #1a202c; color: #e2e8f0; }
+        .dark .app-container { background-color: #2d3748; border-color: #4a5568; }
+        .dark #calendarDayHeaders { background-color: #2d3748; border-bottom-color: #4a5568; }
+        .dark #calendarDayHeaders > div { border-right-color: #4a5568; }
+        .dark #calendarGrid { background-color: #2d3748; border-left-color: #4a5568; border-right-color: #4a5568; border-bottom-color: #4a5568; }
+        .dark .time-label-cell { color: #a0aec0; border-right-color: #4a5568; border-bottom-color: #4a5568; }
+        .dark .day-column { border-right-color: #4a5568; }
+        .dark .hour-slot { border-bottom-color: #4a5568; }
+        .dark .task-block { background-color: #4299e1; color: white; }
+        .dark .controls input[type="date"],
+        .dark .modal-content input[type="date"], /* Added for modal date input */
+        .dark .modal-content input[type="text"],
+        .dark .modal-content input[type="time"] { background-color: #4a5568; border-color: #718096; color: #e2e8f0; }
+        .dark .modal-content label { color: #cbd5e0; }
+        .dark .modal-content, .dark #messageBox { background-color: #2d3748; color: #e2e8f0; }
+        .dark #messageBox.bg-red-500 { background-color: #c53030 !important; color: white; }
+        .dark #messageBox.bg-green-500 { background-color: #2f855a !important; color: white; }
+        .dark .current-week-display, .dark .modal-title, .dark .modal-close-btn { color: #e2e8f0; }
+        .dark #calendarDayHeaders .bg-blue-100 { background-color: #2b6cb0 !important; color: #fff !important; }
+
+        .calendar-container { 
+   background: rgba( 255, 255, 255, 0.05 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 2.5px );
+            -webkit-backdrop-filter: blur( 2.5px );
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            display: flex;
+            flex-direction: column; }
+        #calendarDayHeaders { color: white; display: grid; grid-template-columns: 60px repeat(7, 1fr); font-weight: bold; text-align: center; border-bottom: 1px solid #e5e7eb; }
+        #calendarDayHeaders > div { color: white; padding: 0.5rem; border-right: 1px solid #e5e7eb; }
+        #calendarDayHeaders > div:last-child { color: white; border-right: none; }
+        #calendarGrid { 
+            background: rgba( 255, 255, 255, 0.05 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 2.5px );
+            -webkit-backdrop-filter: blur( 2.5px );
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            display: grid; grid-template-columns: 60px repeat(7, 1fr); grid-template-rows: repeat(24, 60px); border-left: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; position: relative; }
+        .time-label-cell { 
+            grid-column: 1 / 2; 
+            display: flex; 
+            align-items: flex-start; 
+            justify-content: center; 
+            padding-top: 2px; 
+            font-size: 1rem; 
+            color: #ffffff; 
+           /* border-right: 1px solid #e5e7eb;  */
+            /* border-bottom: 1px solid #e5e7eb; */
+            height: 60px; 
+            box-sizing: border-box; 
+        }
+        .time-label-cell:last-of-type { border-bottom: none; }
+        .day-column { position: relative; border-right: 1px solid #e5e7eb; }
+        .day-column:last-child { border-right: none; }
+        .hour-slot { height: 60px; min-height: 60px; /* border-bottom: 1px solid #e5e7eb; */ position: relative; box-sizing: border-box; }
+        .day-column .hour-slot:last-child { border-bottom: none; }
+        .task-block { 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            white-space: normal; 
+            word-break: break-word; 
+            line-height: 1.2; 
+            position: absolute; 
+            z-index: 10; 
+            margin-left: 2px; 
+            margin-right: 2px;
+            background-color: #8B5CF6 !important; /* Purple color */
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .app-container { max-width: 90%; }
+
+        .modal-backdrop { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 28px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #2196F3; }
+        .dark input:checked + .slider { background-color: #60a5fa; }
+        input:focus + .slider { box-shadow: 0 0 1px #2196F3; }
+        input:checked + .slider:before { transform: translateX(22px); }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="text-gray-800 flex flex-col items-center pt-4 pb-8 px-2 md:px-4 min-h-screen">
+
+    <div class="app-container shadow-xl rounded-sm p-4 sm:p-6 md:p-8 w-full">
+        <header class="mb-6 text-center">
+            <h1 class="text-3xl sm:text-4xl font-bold text-blue-600 dark:text-blue-400">Weekly Task Calendar</h1>
+            <div class="controls mt-4 flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-2">
+               
+                <button id="openAddTaskModalBtn" title="Add New Task" class="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-150 w-10 h-10 flex items-center justify-center sm:w-auto sm:px-4 sm:py-2 sm:rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 sm:hidden"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /> </svg>
+                    <span class="hidden sm:inline">Add Task</span>
+                </button>
+                <button id="openSettingsModalBtn" title="Settings" class="p-2 bg-gray-500 text-white rounded-full hover:bg-gray-600 transition duration-150 w-10 h-10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.646.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 1.255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.333.183-.582.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.759 6.759 0 010-1.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </button>
+            </div>
+            <div id="currentWeekDisplay" class="mt-2 text-lg font-semibold text-gray-700 current-week-display"></div>
+        </header>
+
+        <div class="calendar-wrapper border border-gray-300 rounded-sm shadow-md overflow-auto">
+            <div id="calendarDayHeaders"></div>
+            <div id="calendarGrid"></div>
+        </div>
+    </div>
+
+    <div id="messageBox" class="fixed bottom-4 right-4 p-4 bg-red-500 text-white rounded-sm shadow-lg hidden z-20">
+        <span id="messageText"></span>
+        <button id="closeMessageBtn" class="ml-4 font-bold">X</button>
+    </div>
+
+    <div id="addTaskModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center hidden z-30 modal-backdrop">
+        <div class="modal-content relative mx-auto p-5 border w-full max-w-lg shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl sm:text-2xl font-semibold text-gray-700 modal-title">Create New Task</h3>
+                <button id="closeAddTaskModalBtn" class="text-gray-700 hover:text-gray-900 text-2xl font-bold modal-close-btn">&times;</button>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600 mb-2">Set the details for your new task below.</p>
+                <form id="taskForm" class="space-y-4">
+                    <div> <label for="taskDateModalInput" class="block text-sm font-medium text-gray-700">Task Date:</label>
+                        <input type="date" id="taskDateModalInput" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="taskDescriptionModal" class="block text-sm font-medium text-gray-700">Task Description:</label>
+                        <input type="text" id="taskDescriptionModal" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="E.g., Meeting with team">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="startTimeModal" class="block text-sm font-medium text-gray-700">Start Time:</label>
+                            <input type="time" id="startTimeModal" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="endTimeModal" class="block text-sm font-medium text-gray-700">End Time:</label>
+                            <input type="time" id="endTimeModal" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full sm:w-auto px-6 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-150">
+                        Add Task
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full flex justify-center items-center hidden z-40 modal-backdrop">
+        <div class="modal-content relative mx-auto p-6 border w-full max-w-md shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-xl sm:text-2xl font-semibold text-gray-700 modal-title">Settings</h3>
+                <button id="closeSettingsModalBtn" class="text-gray-700 hover:text-gray-900 text-2xl font-bold modal-close-btn">&times;</button>
+            </div>
+            <div class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <label for="darkModeToggle" class="text-sm font-medium text-gray-700">Dark Mode</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="flex items-center justify-between">
+                    <label for="timeFormatToggle" class="text-sm font-medium text-gray-700">Use 24-Hour Format</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="timeFormatToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Core Calendar Elements
+            const calendarGrid = document.getElementById('calendarGrid');
+            const calendarDayHeaders = document.getElementById('calendarDayHeaders');
+            const currentDateInput = document.getElementById('currentDateInput'); // For selecting week to display
+            // const prevWeekBtn = document.getElementById('prevWeekBtn'); // REMOVED
+            // const nextWeekBtn = document.getElementById('nextWeekBtn'); // REMOVED
+            const currentWeekDisplay = document.getElementById('currentWeekDisplay');
+
+            // Message Box Elements
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+            const closeMessageBtn = document.getElementById('closeMessageBtn');
+
+            // Add Task Modal Elements
+            const openAddTaskModalBtn = document.getElementById('openAddTaskModalBtn');
+            const addTaskModal = document.getElementById('addTaskModal');
+            const closeAddTaskModalBtn = document.getElementById('closeAddTaskModalBtn');
+            const taskFormInModal = document.getElementById('taskForm');
+            const taskDateModalInput = document.getElementById('taskDateModalInput'); // New date input in modal
+
+            // Settings Modal Elements
+            const openSettingsModalBtn = document.getElementById('openSettingsModalBtn');
+            const settingsModal = document.getElementById('settingsModal');
+            const closeSettingsModalBtn = document.getElementById('closeSettingsModalBtn');
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const timeFormatToggle = document.getElementById('timeFormatToggle');
+
+            // Application State
+            let selectedDate = new Date(); 
+            let tasks = loadTasks();
+            let use24HourFormat = true; 
+            const HOUR_SLOT_HEIGHT = 60; 
+            const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+            function applyPreferences() {
+                const prefersDark = localStorage.getItem('calendarDarkMode') === 'true';
+                document.documentElement.classList.toggle('dark', prefersDark);
+                if (darkModeToggle) darkModeToggle.checked = prefersDark;
+
+                const prefers24Hour = localStorage.getItem('calendarTimeFormat24Hour') === 'true';
+                use24HourFormat = prefers24Hour;
+                if (timeFormatToggle) timeFormatToggle.checked = prefers24Hour;
+            }
+
+            function openGenericModal(modalElement) {
+                if(modalElement) modalElement.classList.remove('hidden');
+            }
+            function closeGenericModal(modalElement, formToReset = null) {
+                if(modalElement) modalElement.classList.add('hidden');
+                if(formToReset) formToReset.reset(); 
+            }
+
+            // Add Task Modal Listeners & Logic
+            if (openAddTaskModalBtn) {
+                openAddTaskModalBtn.addEventListener('click', () => {
+                    // Initialize the modal's date input with the currently selected display date
+                    if (taskDateModalInput && currentDateInput) {
+                        taskDateModalInput.value = currentDateInput.value;
+                    } else if (taskDateModalInput) { // Fallback if currentDateInput is not there for some reason
+                        taskDateModalInput.value = formatDateForStorage(selectedDate);
+                    }
+                    openGenericModal(addTaskModal);
+                });
+            }
+            if (closeAddTaskModalBtn) closeAddTaskModalBtn.addEventListener('click', () => closeGenericModal(addTaskModal, taskFormInModal));
+            if (addTaskModal) addTaskModal.addEventListener('click', (event) => {
+                if (event.target === addTaskModal) closeGenericModal(addTaskModal, taskFormInModal);
+            });
+
+            // Settings Modal Listeners
+            if (openSettingsModalBtn) openSettingsModalBtn.addEventListener('click', () => openGenericModal(settingsModal));
+            if (closeSettingsModalBtn) closeSettingsModalBtn.addEventListener('click', () => closeGenericModal(settingsModal));
+            if (settingsModal) settingsModal.addEventListener('click', (event) => {
+                if (event.target === settingsModal) closeGenericModal(settingsModal);
+            });
+            
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    if (addTaskModal && !addTaskModal.classList.contains('hidden')) closeGenericModal(addTaskModal, taskFormInModal);
+                    if (settingsModal && !settingsModal.classList.contains('hidden')) closeGenericModal(settingsModal);
+                }
+            });
+
+            if (darkModeToggle) darkModeToggle.addEventListener('change', () => {
+                document.documentElement.classList.toggle('dark', darkModeToggle.checked);
+                localStorage.setItem('calendarDarkMode', darkModeToggle.checked.toString());
+            });
+            if (timeFormatToggle) timeFormatToggle.addEventListener('change', () => {
+                use24HourFormat = timeFormatToggle.checked;
+                localStorage.setItem('calendarTimeFormat24Hour', use24HourFormat.toString());
+                renderFullCalendar();
+            });
+            
+            function getWeekStartDate(date, startDay = 1) { 
+                const d = new Date(date);
+                const day = d.getDay();
+                const diff = d.getDate() - day + (day === 0 && startDay === 1 ? -6 : startDay);
+                return new Date(d.setDate(diff));
+            }
+            
+            function formatDateForStorage(date) {
+                const year = date.getFullYear();
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const day = date.getDate().toString().padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            function formatHourForDisplay(hour) {
+                if (use24HourFormat) return hour.toString().padStart(2, '0') + ":00";
+                const ampm = hour >= 12 ? 'PM' : 'AM';
+                let h = hour % 12;
+                if (h === 0) h = 12;
+                return `${h.toString().padStart(1, ' ')} ${ampm}`;
+            }
+            
+            function updateCurrentWeekDisplay(weekStartDate) {
+                if(!currentWeekDisplay) return;
+                const weekEndDate = new Date(weekStartDate);
+                weekEndDate.setDate(weekStartDate.getDate() + 6);
+                const options = { month: 'long', day: 'numeric' };
+                currentWeekDisplay.textContent = `${weekStartDate.toLocaleDateString(undefined, options)} - ${weekEndDate.toLocaleDateString(undefined, options)}, ${weekStartDate.getFullYear()}`;
+            }
+
+            function renderFullCalendar() {
+                if (!calendarGrid || !calendarDayHeaders) return;
+                calendarGrid.innerHTML = '';
+                calendarDayHeaders.innerHTML = '';
+                const weekStartDate = getWeekStartDate(selectedDate, 1);
+                updateCurrentWeekDisplay(weekStartDate);
+
+                calendarDayHeaders.appendChild(document.createElement('div'));
+                for (let i = 0; i < 7; i++) {
+                    const dayHeader = document.createElement('div');
+                    const currentDay = new Date(weekStartDate);
+                    currentDay.setDate(weekStartDate.getDate() + i);
+                    dayHeader.textContent = `${DAY_NAMES[currentDay.getDay()]} ${currentDay.getDate()}`;
+                    if (formatDateForStorage(currentDay) === formatDateForStorage(new Date())) dayHeader.classList.add('bg-blue-100', 'font-bold');
+                    calendarDayHeaders.appendChild(dayHeader);
+                }
+
+                for (let hour = 0; hour < 24; hour++) {
+                    const timeCell = document.createElement('div');
+                    timeCell.classList.add('time-label-cell');
+                    timeCell.textContent = formatHourForDisplay(hour);
+                    timeCell.style.gridRow = `${hour + 1} / ${hour + 2}`;
+                    calendarGrid.appendChild(timeCell);
+                }
+                
+                for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+                    const currentColumnDate = new Date(weekStartDate);
+                    currentColumnDate.setDate(weekStartDate.getDate() + dayIndex);
+                    const dateStr = formatDateForStorage(currentColumnDate);
+                    const dayColumn = document.createElement('div');
+                    dayColumn.classList.add('day-column');
+                    dayColumn.dataset.date = dateStr;
+                    dayColumn.style.gridColumn = `${dayIndex + 2} / ${dayIndex + 3}`;
+                    dayColumn.style.gridRow = `1 / 25`;
+                    for (let hour = 0; hour < 24; hour++) {
+                        const hourSlot = document.createElement('div');
+                        hourSlot.classList.add('hour-slot');
+                        hourSlot.dataset.hour = hour;
+                        dayColumn.appendChild(hourSlot);
+                    }
+                    calendarGrid.appendChild(dayColumn);
+                }
+                renderTasksForWeek(weekStartDate);
+            }
+
+            function loadTasks() {
+                try { return JSON.parse(localStorage.getItem('calendarTasksWeekly')) || {}; }
+                catch (e) { console.error("Error loading tasks:", e); return {}; }
+            }
+            function saveTasks() {
+                try { localStorage.setItem('calendarTasksWeekly', JSON.stringify(tasks)); }
+                catch (e) { console.error("Error saving tasks:", e); }
+            }
+
+            function showMessage(text, isError = true, duration = 3000) { 
+                if (!messageBox || !messageText) return;
+                messageText.textContent = text;
+                messageBox.classList.remove('hidden', 'bg-green-500', 'bg-red-500');
+                messageBox.classList.add(isError ? 'bg-red-500' : 'bg-green-500');
+                setTimeout(() => messageBox.classList.add('hidden'), duration);
+            }
+            
+            if(closeMessageBtn) closeMessageBtn.addEventListener('click', () => { if(messageBox) messageBox.classList.add('hidden'); });
+            
+            if (taskFormInModal) {
+                taskFormInModal.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const descriptionElement = document.getElementById('taskDescriptionModal');
+                    const startTimeElement = document.getElementById('startTimeModal');
+                    const endTimeElement = document.getElementById('endTimeModal');
+                    // Task date now comes from the modal's date input
+                    const taskDateInputElement = document.getElementById('taskDateModalInput'); 
+
+                    if (!descriptionElement || !startTimeElement || !endTimeElement || !taskDateInputElement) {
+                        showMessage("Form elements missing. Please refresh.", true); return;
+                    }
+
+                    const description = descriptionElement.value.trim();
+                    const startTimeStr = startTimeElement.value;
+                    const endTimeStr = endTimeElement.value;
+                    const taskDateStr = taskDateInputElement.value; // Get date string from modal input
+
+                    if (!description || !startTimeStr || !endTimeStr || !taskDateStr) {
+                        showMessage("Please fill in all task details, including the task date.", true); return;
+                    }
+                    
+                    const taskDate = new Date(taskDateStr + 'T00:00:00'); // Ensure it's parsed as local start of day
+                     if (isNaN(taskDate.getTime())) { 
+                        showMessage("Please select a valid date for the task.", true); return;
+                    }
+
+                    const startHour = parseInt(startTimeStr.split(':')[0]);
+                    const startMinute = parseInt(startTimeStr.split(':')[1]);
+                    const endHour = parseInt(endTimeStr.split(':')[0]);
+                    const endMinute = parseInt(endTimeStr.split(':')[1]);
+
+                    if (endHour < startHour || (endHour === startHour && endMinute <= startMinute)) {
+                        showMessage("End time must be after start time.", true); return;
+                    }
+
+                    const taskDateKey = formatDateForStorage(taskDate);
+                    if (!tasks[taskDateKey]) tasks[taskDateKey] = [];
+                    tasks[taskDateKey].push({
+                        id: Date.now().toString(), description,
+                        startHour, startMinute, endHour, endMinute,
+                        date: taskDateKey
+                    });
+                    saveTasks();
+                    // Re-render the week that is currently being displayed by the main date picker
+                    renderTasksForWeek(getWeekStartDate(selectedDate,1)); 
+                    closeGenericModal(addTaskModal, taskFormInModal); 
+                    showMessage("Task added successfully!", false, 2000); 
+                });
+            }
+
+            function renderTasksForWeek(weekStartDate) {
+                if (!calendarGrid) return;
+                document.querySelectorAll('.task-block').forEach(block => block.remove());
+                for (let i = 0; i < 7; i++) {
+                    const currentDay = new Date(weekStartDate);
+                    currentDay.setDate(weekStartDate.getDate() + i);
+                    const taskDateKey = formatDateForStorage(currentDay);
+                    const dayColumnElement = calendarGrid.querySelector(`.day-column[data-date="${taskDateKey}"]`);
+                    if (tasks[taskDateKey] && dayColumnElement) {
+                        tasks[taskDateKey].forEach(task => {
+                            const taskBlock = document.createElement('div');
+                            taskBlock.classList.add('task-block', 'text-white', 'p-1', 'text-xs', 'shadow-md');
+                            taskBlock.textContent = task.description;
+                            taskBlock.dataset.taskId = task.id;
+                            taskBlock.draggable = true;
+                            
+                            // Add drag event listeners
+                            taskBlock.addEventListener('dragstart', handleDragStart);
+                            taskBlock.addEventListener('dragend', handleDragEnd);
+                            
+                            const deleteBtn = document.createElement('button');
+                            deleteBtn.innerHTML = '&times;';
+                            deleteBtn.classList.add('absolute', 'top-0', 'right-1', 'text-white', 'hover:text-red-300', 'font-bold', 'text-sm', 'leading-none');
+                            deleteBtn.style.padding = "0 2px";
+                            deleteBtn.onclick = (e) => { e.stopPropagation(); deleteTask(task.id, taskDateKey); };
+                            taskBlock.appendChild(deleteBtn);
+                            const topOffset = (task.startHour * HOUR_SLOT_HEIGHT) + ((task.startMinute / 60) * HOUR_SLOT_HEIGHT);
+                            const durationMinutes = (task.endHour * 60 + task.endMinute) - (task.startHour * 60 + task.startMinute);
+                            let blockHeight = (durationMinutes / 60) * HOUR_SLOT_HEIGHT;
+                            blockHeight = Math.max(blockHeight, 20); 
+                            taskBlock.style.top = `${topOffset}px`;
+                            taskBlock.style.height = `${blockHeight - 2}px`; 
+                            taskBlock.style.left = `2px`; 
+                            taskBlock.style.right = `2px`;
+                            dayColumnElement.appendChild(taskBlock);
+                        });
+                    }
+                }
+                
+                // Add drop event listeners to hour slots
+                document.querySelectorAll('.hour-slot').forEach(slot => {
+                    slot.addEventListener('dragover', handleDragOver);
+                    slot.addEventListener('drop', handleDrop);
+                });
+            }
+
+            // Drag and Drop Handlers
+            let draggedTask = null;
+
+            function handleDragStart(e) {
+                draggedTask = this;
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', this.dataset.taskId);
+                
+                // Create an empty image for the drag operation
+                const emptyImage = new Image();
+                e.dataTransfer.setDragImage(emptyImage, 0, 0);
+            }
+
+            function handleDragEnd(e) {
+                document.querySelectorAll('.hour-slot').forEach(slot => {
+                    slot.classList.remove('drag-over');
+                });
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                this.classList.add('drag-over');
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                this.classList.remove('drag-over');
+                
+                if (!draggedTask) return;
+                
+                const taskId = e.dataTransfer.getData('text/plain');
+                const oldDateKey = draggedTask.parentElement.dataset.date;
+                const newDateKey = this.closest('.day-column').dataset.date;
+                const hourSlot = parseInt(this.dataset.hour);
+                
+                // Find the task in the old date
+                const taskIndex = tasks[oldDateKey].findIndex(t => t.id === taskId);
+                if (taskIndex === -1) return;
+                
+                const task = tasks[oldDateKey][taskIndex];
+                const durationMinutes = (task.endHour * 60 + task.endMinute) - (task.startHour * 60 + task.startMinute);
+                
+                // Update task time
+                task.startHour = hourSlot;
+                task.startMinute = 0;
+                task.endHour = Math.floor((hourSlot * 60 + durationMinutes) / 60);
+                task.endMinute = (hourSlot * 60 + durationMinutes) % 60;
+                
+                // Move task to new date if different
+                if (oldDateKey !== newDateKey) {
+                    if (!tasks[newDateKey]) tasks[newDateKey] = [];
+                    tasks[newDateKey].push(task);
+                    tasks[oldDateKey].splice(taskIndex, 1);
+                    if (tasks[oldDateKey].length === 0) delete tasks[oldDateKey];
+                }
+                
+                saveTasks();
+                renderTasksForWeek(getWeekStartDate(selectedDate, 1));
+            }
+
+            // Add styles for drag and drop
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = `
+                .hour-slot.drag-over {
+                    background-color: rgba(59, 130, 246, 0.1);
+                }
+                .task-block {
+                    cursor: move;
+                    user-select: none;
+                }
+                .task-block:active {
+                    cursor: grabbing;
+                }
+                .task-block * {
+                    pointer-events: none;
+                }
+                .task-block::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: transparent;
+                }
+            `;
+            document.head.appendChild(styleSheet);
+
+            function deleteTask(taskId, taskDateKey) {
+                if (tasks[taskDateKey]) {
+                    tasks[taskDateKey] = tasks[taskDateKey].filter(task => task.id !== taskId);
+                    if (tasks[taskDateKey].length === 0) delete tasks[taskDateKey];
+                    saveTasks();
+                    renderTasksForWeek(getWeekStartDate(selectedDate,1)); 
+                    showMessage("Task deleted.", false, 2000); 
+                }
+            }
+
+            // Event listener for the main date input (controls displayed week)
+            if (currentDateInput) currentDateInput.addEventListener('change', (e) => {
+                const newSelectedDate = new Date(e.target.value + 'T00:00:00');
+                if (!isNaN(newSelectedDate.getTime())) {
+                    selectedDate = newSelectedDate; // This date determines the week to show
+                    renderFullCalendar();
+                }
+            });
+
+            function initializeApp() {
+                applyPreferences(); 
+                const today = new Date();
+                if(currentDateInput) {
+                    currentDateInput.value = formatDateForStorage(today); // Set to YYYY-MM-DD format
+                    selectedDate = new Date(currentDateInput.value + 'T00:00:00'); 
+                } else {
+                    selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                }
+                renderFullCalendar();
+            }
+            initializeApp();
+        });
+// This if for the backend
+// backend/server.js
+const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const cors = require('cors'); // Required for frontend/backend communication
+
+const app = express();
+const PORT = process.env.PORT || 3000; // Use port 3000 or an environment variable
+
+// Middleware
+app.use(express.json()); // Allows Express to parse JSON request bodies
+app.use(cors({
+    origin: 'http://localhost:5500' // Replace with the actual URL of your frontend (e.g., from Live Server)
+}));
+
+// --- Dummy Database (Replace with a real database later) ---
+const users = []; // Stores user objects: { id, username, passwordHash, subscriptionStatus }
+// Example: { id: 'someId', username: 'testuser', passwordHash: 'hashedpassword', subscriptionStatus: 'active' }
+// --- End Dummy Database ---
+
+// --- JWT Secret (Keep this strong and in environment variables in production) ---
+const JWT_SECRET = 'your_super_secret_jwt_key_12345';
+// --- End JWT Secret ---
+
+
+// Middleware to protect routes (Authentication)
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Expects: "Bearer TOKEN"
+
+    if (token == null) return res.sendStatus(401); // No token, Unauthorized
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403); // Token invalid/expired, Forbidden
+        req.user = user; // Attach user info from token to the request
+        next(); // Proceed to the next middleware/route handler
+    });
+}
+
+// Middleware to check subscription (Authorization)
+function checkSubscription(req, res, next) {
+    // In a real app, you'd fetch this from your database based on req.user.id
+    // For now, let's assume req.user already contains subscription info from the token or a lookup
+    if (req.user && req.user.subscriptionStatus === 'active') {
+        next(); // User has an active subscription, proceed
+    } else {
+        res.status(403).json({ message: 'Subscription required to access this content.' }); // Forbidden
+    }
+}
+
+
+// --- Routes ---
+
+// Register User
+app.post('/register', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Basic validation
+        if (!username || !password) {
+            return res.status(400).json({ message: 'Username and password are required.' });
+        }
+        if (users.find(u => u.username === username)) {
+            return res.status(409).json({ message: 'Username already exists.' });
+        }
+
+        // Hash password
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        // Store user (with a default 'inactive' subscription for demonstration)
+        const newUser = {
+            id: users.length + 1, // Simple ID generation
+            username,
+            passwordHash: hashedPassword,
+            subscriptionStatus: 'inactive' // Default status
+        };
+        users.push(newUser);
+
+        res.status(201).json({ message: 'User registered successfully!' });
+    } catch (error) {
+        console.error('Registration error:', error);
+        res.status(500).json({ message: 'Server error during registration.' });
+    }
+});
+
+// Login User
+app.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        const user = users.find(u => u.username === username);
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid credentials.' });
+        }
+
+        // Compare password
+        const isMatch = await bcrypt.compare(password, user.passwordHash);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid credentials.' });
+        }
+
+        // Generate JWT (include subscription status in token for easy access)
+        const token = jwt.sign(
+            { id: user.id, username: user.username, subscriptionStatus: user.subscriptionStatus },
+            JWT_SECRET,
+            { expiresIn: '1h' } // Token expires in 1 hour
+        );
+
+        res.json({ message: 'Login successful!', token });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ message: 'Server error during login.' });
+    }
+});
+
+// Protected route (requires login)
+app.get('/dashboard', authenticateToken, (req, res) => {
+    res.json({
+        message: `Welcome to your dashboard, ${req.user.username}!`,
+        userId: req.user.id,
+        subscriptionStatus: req.user.subscriptionStatus
+    });
+});
+
+// Protected route requiring subscription
+app.get('/premium-content', authenticateToken, checkSubscription, (req, res) => {
+    res.json({ message: `Access granted to premium content for ${req.user.username}!` });
+});
+
+// Route to upgrade subscription (for demonstration)
+app.post('/upgrade-subscription', authenticateToken, (req, res) => {
+    const userIndex = users.findIndex(u => u.id === req.user.id);
+    if (userIndex === -1) {
+        return res.status(404).json({ message: 'User not found.' });
+    }
+
+    users[userIndex].subscriptionStatus = 'active'; // Simulate upgrade
+    
+    // Re-issue a new token with updated subscription status
+    const newToken = jwt.sign(
+        { id: users[userIndex].id, username: users[userIndex].username, subscriptionStatus: users[userIndex].subscriptionStatus },
+        JWT_SECRET,
+        { expiresIn: '1h' }
+    );
+
+    res.json({ message: 'Subscription upgraded successfully!', newToken });
+});
+
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Backend server running on http://localhost:${PORT}`);
+});
+
+
+    </script>
+</body>
+</html>
